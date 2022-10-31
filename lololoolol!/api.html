@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/x-icon" href="./images/example.png">
+  <link rel="stylesheet" type="text/css" href="./styles.css">
+
+  <!-- Embed -->
+  <meta name="og:title" content="PooPoo API | Current APIs">
+  <meta name="og:description" content='Enjoy a list of the current poo-poos.'>
+  <meta name="og:image" content="./images/example.png">
+  <meta name="keywords" content="poop, api, frostzzone, eruption, kingerous, jeremy, coding, discord, image, password, github">
+  <meta name="theme-color" content="#f56642" />
+  <title>PooPoo API | Current APIs</title>
+
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+
+  <style>
+    header {
+      background-image: url("images/banner2.jpg");
+    }
+
+    main h2 {
+      background-image: linear-gradient(90deg, rgba(56,74,255,1) 0%, rgba(196,0,255,1) 100%);
+    }
+    
+    #utilities h2 {
+      color: white !important;
+      text-align: left !important;
+      background-clip: none !important;
+      -webkit-background-clip: none !important;
+      -webkit-text-fill-color: initial !important;
+      animation: none !important;
+    }
+    
+    #search {
+      width: 100%;
+      padding: 0.8em;
+      background-color: #3b3b3b;
+      font-size: 92%;
+      border: 0.85px solid #0d0d0d;
+    }
+    
+    .cardlist {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.75em;
+      flex-wrap: wrap;
+      padding-top: 1em;
+      animation: 0.5s cubic-bezier(0.075, 0.82, 0.165, 1) 0s 1 slideInFromBottom;
+    }
+
+  
+    @keyframes slideInFromBottom {
+      0% {
+          transform: translateY(50%);
+          filter: opacity(0);
+      }
+
+      100% {
+          transform: translateY(0);
+          filter: opacity(1);
+      }
+  }
+
+  @keyframes cardDelete {
+      0% {
+          transform: translateY(0);
+          filter: opacity(1);
+      }
+
+      50% {
+          transform: translateY(100%);
+          filter: opacity(0);
+          width: 200px;
+      }
+
+      100% {
+          transform: translateY(100%);
+          filter: opacity(0);
+          width: 0px;
+      }
+    }
+
+    @keyframes rowDelete {
+      0% {
+          transform: translateX(0);
+          filter: opacity(1);
+      }
+
+      50% {
+          transform: translateX(-100%);
+          filter: opacity(0);
+      }
+
+      100% {
+          transform: translateX(-100%);
+          filter: opacity(0);
+      }
+    }
+
+    @keyframes cardAdd {
+      0% {
+          transform: translateY(100%);
+          filter: opacity(0);
+          width: 0px;
+      }
+
+      50% {
+          transform: translateY(100%);
+          filter: opacity(0);
+          width: 200px;
+      }
+
+      100% {
+          transform: translateY(0);
+          filter: opacity(1);
+      }
+  }
+
+  @keyframes shakeDeny {
+      0% {
+          transform: 0;
+          filter: brightness(1);
+      }
+
+      25% {
+          transform: translateX(-10px);
+          filter: brightness(0.8);
+      }
+
+      75% {
+          transform: translateX(10px);
+          filter: brightness(0.8);
+      }
+
+      100% {
+          filter: brightness(1);
+          transform: 0;
+      }
+    }
+
+    .card {
+      padding: 0.5em;
+      width: 250px;
+      position: relative;
+      flex-shrink: 0;
+      height: 120px;
+      border-radius: 0.25em;
+      z-index: 1;
+      user-select: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      overflow: hidden;
+    }
+
+    .card:not([id]):not(.card-empty):not(.my-card) {
+      text-shadow: 2px 2px 7px #121212;
+      background: #292929;
+      box-shadow: 4px 5px #0f0f0f;
+      height: 300px;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+
+    .card:hover:not(.card-empty):not(.card-disabled) {
+      transform: scale(1.1);
+      z-index: 2;
+      box-shadow: 0 0 5px black;
+    }
+
+    .card a {
+      position: absolute;
+      height: 100%;
+      width: calc(100% - 10px);
+      color: inherit;
+      top: 0;
+      text-decoration: none;
+      overflow: hidden;
+      padding: 5px;
+      transition: transform 0.2s cubic-bezier(0.075, 0.82, 0.165, 1);
+      text-decoration: none !important;
+    }
+
+    .card:not(.card-empty):not(.card-disabled) a:active {
+      transform: scale(0.9);
+      z-index: 2;
+    }
+
+    .card a * {
+      margin-top: 15px;
+    }
+
+    .card:hover:not(.card-empty) a h1 {
+      padding-top: 0px;
+    }
+
+    .card h3 {
+      text-align: center;
+      font-size: 150%;
+    }
+
+    .card-desc {
+      font-size: 120%;
+    }
+
+    .card-url {
+      font-size: 100%;
+      font-style: italic;
+      
+    }
+
+    .card img {
+      width: 100%;
+    }
+    
+    .card-empty {
+      border: 3px dashed white;
+      width: 194px;
+      background-color: transparent;
+      height: 94px;
+    }
+
+    .card-empty:before {
+      background: none;
+    }
+
+    /* my links */
+    .my-card {
+        background-color: var(--blue);
+    }
+
+    #add-link {
+        transition: filter 0.2s;
+        cursor: pointer;
+    }
+
+    #add-link:hover {
+        filter: brightness(0.8)
+    }
+</style>
+</head>
+
+<body>
+    <header>
+        <div>
+            <h1>Current APIs</h1>
+            <p>Enjoy a list of the current poo-poos</p>
+        </div>
+    </header>
+
+    <main>
+      <section id="utilities">
+        <h2>Searching is here! <code><small>beta</small></code></h2>
+        <input type="search" id="search" placeholder="Search for your favorite APIs...">
+      </section>
+      <section id="image-apis">
+        <h2>Image APIs</h2>
+        <div class="cardlist">
+          <article class="card" data-desc="Take high quality website screenshots with this API!">
+            <a href="api/image?url=https://google.com">
+              <h3>Web Screenshoter</h3>
+              <p class="card-desc">Take high quality website screenshots with this API!</p>
+              <p class="card-url">/image?url=https://google.com</p>
+              <img src="https://poopoo-api.vercel.app/api/image?url=https://google.com">
+            </a>
+          </article>
+          <article class="card">
+            <a href="api/invert?url=https://poopoo-api.vercel.app/images/example.png">
+              <h3>Image Inverter</h3>
+              <p class="card-desc">Invert the colors of an image with this simple API!</p>
+              <p class="card-url">/invert?url=https://poopoo-api.vercel.app/images/example.png</p>
+              <img src="https://poopoo-api.vercel.app/api/invert?url=https://poopoo-api.vercel.app/images/example.png">
+            </a>
+          </article>
+          <article class="card" data-desc="Grayscale an image with this simple API!">
+            <a href="api/grayscale?url=https://poopoo-api.vercel.app/images/example.png">
+              <h3>Grayscale Image</h3>
+              <p class="card-desc">Grayscale an image with this simple API!</p>
+              <p class="card-url">/grayscale?url=https://poopoo-api.vercel.app/images/example.png</p>
+              <img src="https://poopoo-api.vercel.app/api/grayscale?url=https://poopoo-api.vercel.app/images/example.png">
+            </a>
+          </article>
+          <article class="card" data-desc="Pixelate an image with this simple API!">
+            <a href="api/pixel?url=https://poopoo-api.vercel.app/images/example.png">
+              <h3>Pixlate Image</h3>
+              <p class="card-desc">Pixelate an image with this simple API!</p>
+              <p class="card-url">/pixel?strength=10&url=https://poopoo-api.vercel.app/images/example.png</p>
+              <img src="https://poopoo-api.vercel.app/api/pixel?strength=10&url=https://poopoo-api.vercel.app/images/example.png">
+            </a>
+          </article>
+          <article class="card" data-desc="Uh oh, watch out for that dangerous gun! | Add a gun to any image!">
+            <a href="api/gun?url=https://poopoo-api.vercel.app/images/example.png">
+              <h3>Gun</h3>
+              <p class="card-desc">Uh oh, watch out for that dangerous gun! | Add a gun to any image!</p>
+              <p class="card-url">/gun?url=https://poopoo-api.vercel.app/images/example.png</p>
+              <img style="width:70%;" src="https://poopoo-api.vercel.app/api/gun?url=https://poopoo-api.vercel.app/images/example.png">
+            </a>
+          </article>
+          <article class="card" data-desc="This poop is epic! | Put a picture on a poo!">
+            <a href="api/poopify?url=https://poopoo-api.vercel.app/images/epicFace.png">
+              <h3>Poopify</h3>
+              <p class="card-desc">This poop is epic! | Put a picture on a poo!</p>
+              <p class="card-url">/poopify?url=https://poopoo-api.vercel.app/images/epicFace.png</p>
+              <img style="width:70%;" src="https://poopoo-api.vercel.app/api/poopify?url=https://poopoo-api.vercel.app/images/epicFace.png">
+            </a>
+          </article>
+          <article class="card" data-desc="It's cooked alright. | Deepfry any image!">
+            <a href="api/deepfry?url=https://poopoo-api.vercel.app/images/example.png">
+              <h3>Deepfry</h3>
+              <p class="card-desc">It's cooked alright. | Deepfry any image!</p>
+              <p class="card-url">/deepfry?url=https://poopoo-api.vercel.app/images/example.png</p>
+              <img src="https://poopoo-api.vercel.app/api/deepfry?url=https://poopoo-api.vercel.app/images/example.png">
+            </a>
+          </article>
+          <article class="card" data-desc="Nah, yah meme.">
+            <a href="api/image/drake?upperText=hello&lowerText=hallo">
+              <h3>Drakeposting</h3>
+              <p class="card-desc">The famous drake "Nah, yah" meme.</p>
+              <p class="card-url">/image/drake?upperText=hello&lowerText=hallo</p>
+              <img src="https://poopoo-api.vercel.app/api/image/drake?upperText=hello&lowerText=hallo">
+            </a>
+          </article>
+          <article class="card" data-desc="THe famous big brain guy meme, 🧠🧠🧠🧠🧠">
+            <a href="api/image/bigBrainGuy?text=Forgive%20is%20not%20%20an%20excuse">
+              <h3>Big Brain Guy</h3>
+              <p class="card-desc">🧠🧠🧠🧠🧠</p>
+              <p class="card-url">image/bigBrainGuy?text=Forgive%20is%20not%20%20an%20excuse</p>
+              <img src="https://poopoo-api.vercel.app/api/image/bigBrainGuy?text=Forgive%20is%20not%20%20an%20excuse">
+            </a>
+          </article>
+          <article class="card" data-desc="Make a surprised Pikachu meme!">
+            <a href="api/pikachu?text=macncheese">
+              <h3>Pikachu</h3>
+              <p class="card-desc">Make a surprised Pikachu meme!</p>
+              <p class="card-url">/pikachu?text=macncheese</p>
+              <img src="https://poopoo-api.vercel.app/api/pikachu?text=macncheese">
+            </a>
+          </article>
+          <article class="card" data-desc="Click to get info on some other image generations stuff.">
+            <a href="api/image/gen">
+              <h3>More Image APIs</h3>
+              <p class="card-desc">Click to get info on some other image generations stuff.</p>
+              <img style="width: 70%" src="https://cdn-0.emojis.wiki/emoji-pics/twitter/question-mark-twitter.png" />
+            </a>
+          </article>
+        </div>
+      </section>
+      <section id="number-text-apis">
+        <h2>Number/Text APIs</h2>
+        <div class="cardlist">
+          <article class="card" data-desc="Randomly gererate a UUID, it will always be different!">
+            <a href="api/uuid">
+              <h3>UUID generator</h3>
+              <p>Randomly gererate a UUID, it will always be different!</p>
+              <p class="card-url">/api/uuid</p>
+            </a>
+          </article>
+          <article class="card" data-desc="Convert Roman numbers into normal intergers or do the oposite!">
+            <a href="api/roman">
+              <h3>Roman Numerals Converter</h3>
+              <p class="card-desc">Convert Roman numbers into normal intergers or do the oposite!</p>
+              <p class="card-url">/api/roman</p>
+            </a>
+          </article>
+          <article class="card" data-desc="Remove all emojis from text | Give a list of emojis | Remove every character except letters and numbers">
+            <a href="api/remove">
+              <h3>Remove Emojis/Characters</h3>
+              <p class="card-desc">Remove all emojis from text | Give a list of emojis | Remove every character except letters and numbers</p>
+              <p class="card-url">/api/remove</p>
+            </a>
+          </article>
+          <article class="card" data-desc="Emojify text for discord">
+            <a href="api/emojify">
+              <h3>Emojify text for discord</h3>
+              <p class="card-desc">Turns inputed text to emojis</p>
+              <p class="card-url">/api/emojify</p>
+            </a>
+          </article>
+          <article class="card" data-desc="Simplifying a list by removing all lists in it!">
+            <a href="api/flat">
+              <h3>Flatten Lists</h3>
+              <p class="card-desc">Simplifying a list by removing all lists in it!</p>
+              <p class="card-url">/api/flat</p>
+            </a>
+          </article>
+          <article class="card" data-desc="Generate a random password, it will always be different everytime!">
+            <a href="api/password">
+              <h3>Password Generator</h3>
+              <p class="card-desc">Generate a random password, it will always be different everytime!</p>
+              <p class="card-url">/password</p>
+            </a>
+              </article>
+              <article class="card" data-desc="Encode any piece of text into binary numbers! *01101110 01101001 01100011 01100101*">
+                <a href="api/encode?text=hi">
+                  <h3>Binary Encoder</h3>
+                  <p class="card-desc">Encode any piece of text into binary numbers! *01101000 01101001*</p>
+                  <p class="card-url">/encode?text=text</p>
+                </a>
+              </article>
+            <article class="card" data-desc="Decode binary numbers into normal text / decimal numbers *nice*">
+              <a href="api/decode?binary=01101000 01101001">
+                <h3>Binary Decoder</h3>
+                <p class="card-desc">Decode binary numbers into normal text / decimal numbers *hi*</p>
+                <p class="card-url">/decode?binary=binary</p>
+              </a>
+            </article>
+            <article class="card">
+              <a href="api/spoil?text=hello">
+                <h3>Annoying Discord Spoilers</h3>
+                <p class="card-desc">Wow, these spoilers are so annoying!</p>
+                <p class="card-url">/spoil?text=text</p>
+              </a>
+            </article>
+        </div>
+      </section>
+        <section id="others">
+          <h2>Other APIs</h2>
+          <div class="cardlist">
+            <article class="card" data-desc="Show almost every information of a Github user with this API!">
+              <a href="api/github?name=frostzzone">
+                <h3>Github Info</h3>
+                <p class="card-desc">Show almost every information of a Github user with this API!</p>
+                <p class="card-url">/github?name=user</p>
+              </a>
+            </article>
+            <article class="card" data-desc="Search for channels and videos on YouTube with this API!">
+              <a href="api/youtube">
+                <h3>Youtube search</h3>
+                <p class="card-desc">Search for channels and videos on YouTube with this API!</p>
+                <p class="card-url">/api/youtube</p>
+              </a>
+            </article>
+            <article class="card" data-desc="This API can give you a random question. Perfect for QOTD (question of the day) bots!">
+              <a href="api/qotd">
+                <h3>QOTD</h3>
+                <p class="card-desc">This API can give you a random question. Perfect for QOTD (question of the day) bots!</p>
+                <p class="card-url">/api/qotd</p>
+              </a>
+            </article>
+          </div>
+        </section>
+    </main>
+    <style>
+        .qc-cmp-showing {
+            visibility: hidden !important;
+        }
+
+        body.didomi-popup-open {
+            overflow: auto !important;
+        }
+
+        #didomi-host {
+            visibility: hidden !important;
+        }
+    </style>
+</body>
+<script src="./javascript/apiSearch.js"></script>
+<script src="./javascript/siteComponents.js"></script>
+<script src="./javascript/spawnDevelopers.js"></script>
+</html>
