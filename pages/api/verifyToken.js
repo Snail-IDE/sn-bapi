@@ -1,6 +1,6 @@
 export default async (req, res) => {
     const privateCode = req.query.privateCode;
-    fetch(`https://api.allorigins.win/raw?url=https://auth.itinerary.eu.org/api/auth/verifyToken?privateCode=${privateCode}`).then(response => {
+    fetch(`https://auth-api.itinerary.eu.org/auth/verifyToken/${privateCode}`).then(response => {
         if (!response.ok) {
             response.text().then(text => {
                 res.status(400)
