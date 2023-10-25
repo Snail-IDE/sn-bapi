@@ -22,7 +22,7 @@ export default async (req, res) => {
     return res.status(400)
       .setHeader('Content-Type', 'application/json')
       .send(JSON.stringify({
-        error: err
+        error: String(err)
       }, null, 4));
   }
   res.status(200);
