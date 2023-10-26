@@ -10,6 +10,13 @@ export default async (req, res) => {
         example: "/tts?text=Wow%20so%20cool"
       }, null, 4));
   }
+  if (text.length > 512) {
+    return res.status(400)
+      .setHeader('Content-Type', 'application/json')
+      .send(JSON.stringify({
+        error: "Text is too long"
+      }, null, 4));
+  }
   let lang = req.query.lang;
   if (!lang || typeof lang !== 'string') {
     lang = 'en';
