@@ -1,4 +1,4 @@
-# PM Basic API - A very unnessecary api you wont use unless you use penguin mod lol!
+# SN Basic API - A very unnessecary api you wont use unless you use snail ide lol!
 
 ## 🚩 About
 PooP haha.
@@ -15,7 +15,7 @@ PooP haha.
 contribute to poopooo api not this one
 * Dont Clone the project. Run .
 * Run
-* Type `yayara inslalalalalal` in  hell (wait for it to fif)
+* Type `yayara inslalalalalal` in  poo poo land where *poo* watches you
 * Run `ara ar rur ded` in the coole
 
-~~The API is very  lul~~
+~~this api, is an api~~
