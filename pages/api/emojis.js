@@ -1,4 +1,4 @@
-const libraryUrl = 'https://library.penguinmod.com/files/emojis';
+const libraryUrl = 'https://snail-ide-object-libraries.vercel.app/files/emojis';
 
 export default async (req, res) => {
     try {
